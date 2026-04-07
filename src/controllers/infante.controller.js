@@ -19,6 +19,34 @@ class InfanteController {
             });
         }
     }
+     // Buscar infante
+    static async buscarInfante(req, res) {
+        try {
+            const filtros = req.query;
+
+            if (!filtros.nombre && !filtros.id_infante) {
+                return res.status(400).json({
+                    mensaje: "Se requiere al menos un filtro (id_infante o nombre)"
+                });
+            }
+
+            const resultado = await infante.buscarInfante(filtros);
+
+            if (resultado.length === 0) {
+                return res.status(404).json ({
+                    mensaje: "No se encontraron resultados"
+                });
+            }
+            res.json(resultado);
+
+        } catch (error) {
+
+            res.status(500).json ({
+            mensaje: "Error al buscar",
+            error: error.message
+            });
+        }
+    }
 }
 
 module.exports = InfanteController;
