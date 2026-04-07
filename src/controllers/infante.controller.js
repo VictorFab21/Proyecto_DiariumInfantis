@@ -47,6 +47,23 @@ class InfanteController {
             });
         }
     }
+    // Crear nuevo infante
+    static async crearInfante(req, res) {
+        try {
+            const nuevoInfante = await infante.crearInfante(req.body);
+            
+            res.status(201).json ({
+                mensaje: "Infante creado correctamente",
+                data: nuevoInfante
+            })
+        } 
+        catch (error) {
+            res.status(500).json ({
+                mensaje: "Error al crear el infante",
+                error: error.message
+            });
+        }
+    }
 }
 
 module.exports = InfanteController;

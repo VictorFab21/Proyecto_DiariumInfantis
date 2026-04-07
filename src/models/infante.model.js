@@ -37,6 +37,49 @@ class Infante {
             console.error('Error al buscar infante: ' + error.message);
         }
     }
+    // Crear nuevo infante
+    static async crearInfante(data) {
+        try {
+            const {
+                nombre,
+                peso,
+                fecha_fecundacion,
+                genero,
+                fecha_nacimiento,
+                id_embarazofk
+            } = data;
+            const [result] = await mysqlPool.query(`
+                INSERT INTO Infante (
+                    nombre,
+                    peso,
+                    fecha_fecundacion,
+                    genero,
+                    fecha_nacimiento,
+                    id_embarazofk)
+                VALUES (?, ?, ?, ?, ?, ?)`,
+                    [
+                        nombre,
+                        peso,
+                        fecha_fecundacion,
+                        genero,
+                        fecha_nacimiento,
+                        id_embarazofk
+                ])
+            return {
+                id_infante: result.insertId,
+                nombre,
+                peso,
+                fecha_fecundacion,
+                genero,
+                fecha_nacimiento,
+                id_embarazofk
+            };     
+        } catch (error) {
+            console.error('Error al crear el infante: ' + error.message);
+            throw error;
+        }
+
+    }
 }
 
 module.exports = Infante;
