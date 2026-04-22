@@ -10,17 +10,23 @@ const citasRoutes = require('./routes/citaMedica.routes');
 const embarazoRoutes = require('./routes/embarazo.routes');
 const infanteRoutes = require('./routes/infante.routes');
 const usuariosRoutes = require('./routes/usuarios.routes');
+const authRoutes = require('./routes/auth.routes');
+const seguimientoEmbarazo = require('./routes/seguimientoEmbarazo.routes'); 
 
+app.use('/api/auth', authRoutes);
 app.use('/api/citas', citasRoutes);
 app.use('/api/embarazos', embarazoRoutes);
 app.use('/api/infantes', infanteRoutes);
 app.use('/api/usuarios', usuariosRoutes);
+app.use('/api/seguimiento-embarazo', seguimientoEmbarazo);
 
 app.get('/', (req, res) => {
     res.json({
         mensaje: 'API de diariumInfantis híbrida funcionando correctamente'
     });
 });
+
+app.get('/api/seguimiento-embarazo', seguimientoEmbarazo);
 
 app.use((err, req, res, next) => {
     console.error(err);

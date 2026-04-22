@@ -26,31 +26,39 @@ const [result] = await mysqlPool.query(`
     telefono
     )
     VALUES(?,?,?,?,?)
-    ` ,[nombre,apellido, correo,contrasenia,telefono]
-    );
+    ` ,[nombre,apellido, correo,contrasenia,telefono]);
 
-return {
-    id_usuario:result.insertId
-}
-} 
+    return {id_usuario:result.insertId};
+    }
 // 
 static async actualizar(data){
-    const[rows]= await mysqlPool.query(`
-     SELECT
+        const{
+            nombre,
+            apellido,
+            correo,
+            contrasenia,
+            telefono,
+        } = data;
+
+        const [result] = await mysqlPool.query(`
+            UPDATE usuario
+            SET nombre = ?, apellido = ?, correo = ?, contrasenia = ?, telefono = ?
+            WHERE id_usuario = ?
+        `, [nombre, apellido, correo, contrasenia, telefono, id_usuario]);
         
-        `)
-}
+        return result;
+    }
 }
 
 const buscarUsuarioPorCorreo = async (correo) => {
     const [rows] = await mysqlPool.query(
-        "SELECT * FROM Usuario WHERE correo = ?",
+        "SELECT * FROM usuario WHERE correo = ?",
         [correo]
     );
 
     return rows[0];
 };
 module.exports = {
+    Usuario,
     buscarUsuarioPorCorreo
 };
-module.exports = Usuario;
