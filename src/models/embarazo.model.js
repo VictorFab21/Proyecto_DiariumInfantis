@@ -5,21 +5,13 @@ class Embarazo {
     static async obtenerTodo() {
         try {
             const [rows] = await mysqlPool.query(`
-                SELECT
-                    id_embarazo,
-                    ultima_menstruacion,
-                    semana_gestacion,
-                    fecha_probable,
-                    id_usuariofk
-                FROM Embarazo
-                ORDER BY id_embarazo
-                `
-            );
+                SELECT * FROM Embarazo
+                ORDER BY id_embarazo`);
             return rows;
             
         } catch (error) {
-            console.error('Error al obtener los embarazos: ' + error.message);
-            throw error;
+            console.error('Error al obtener los embarazos: ' + error);
+            throw new Error('Error en la base de datos');
         }
     }
 
@@ -53,8 +45,8 @@ class Embarazo {
                 id_usuariofk
             };
         } catch (error) {
-            console.error('Error al crear el embarazo: ' + error.message);
-            throw error;
+            console.error('Error al crear el embarazo: ' + error);
+            throw new Error('Error en la base de datos');
         }
     }
 
@@ -67,6 +59,7 @@ class Embarazo {
                 fecha_probable,
                 id_usuariofk
             } = data;
+            
             const [result] =await mysqlPool.query(`
                 UPDATE Embarazo 
                 SET 
@@ -85,18 +78,16 @@ class Embarazo {
 
                 // verificar si se actualizó algún registro
                 if (result.affectedRows === 0) {
-                    console.log(result);
                     return null; // No se encontró el embarazo para actualizar;
                 }
 
             return result;
 
             } catch (error) {
-                console.error('Error al modificar el embarazo: ' + error.message);
-                throw error;
+                console.error('Error al modificar el embarazo: ' + error);
+                throw new Error('Error en la base de datos');
+            }
         }
-    }
-
     // Buscar embarazo por ID
     static async buscarEmbarazoID(id) {
         const [rows] = await mysqlPool.query(`

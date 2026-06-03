@@ -44,9 +44,16 @@ class EmbarazoController {
 
             const resultado = await Embarazo.modificarEmbarazo(id, data);
 
-            if(!resultado){
+            // Verificar si se actualizó algún registro
+            if (resultado.affectedRows === 0) {
                 return res.status(404).json({
                     mensaje: "Embarazo no encontrado"
+                });
+            }
+
+            if (resultado.changedRows === 0) {
+                return res.status(200).json({
+                    mensaje: "No se realizaron cambios en el embarazo"
                 });
             }
 

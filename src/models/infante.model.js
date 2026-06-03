@@ -26,7 +26,7 @@ class Infante {
         }
         if (filtros.nombre) {
             query += " AND nombre LIKE ?";
-            valores.push(`%${filtros.nombre}%`);
+            valores.push(`${filtros.nombre}%`);
         }
         query += " ORDER BY id_infante";
 
@@ -48,6 +48,7 @@ class Infante {
                 fecha_nacimiento,
                 id_embarazofk
             } = data;
+
             const [result] = await mysqlPool.query(`
                 INSERT INTO Infante (
                     nombre,
@@ -57,15 +58,16 @@ class Infante {
                     fecha_nacimiento,
                     id_embarazofk)
                 VALUES (?, ?, ?, ?, ?, ?)`,
-                    [
-                        nombre,
-                        peso,
-                        fecha_fecundacion,
-                        genero,
-                        fecha_nacimiento,
-                        id_embarazofk
+                [
+                    nombre,
+                    peso,
+                    fecha_fecundacion,
+                    genero,
+                    fecha_nacimiento,
+                    id_embarazofk
                 ])
-            return {
+                
+                return {
                 id_infante: result.insertId,
                 nombre,
                 peso,
@@ -74,11 +76,11 @@ class Infante {
                 fecha_nacimiento,
                 id_embarazofk
             };     
+
         } catch (error) {
             console.error('Error al crear el infante: ' + error.message);
             throw error;
         }
-
     }
 }
 

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-
+const verificarToken = require('../middlewares/auth.middleware');
 const InfanteController = require('../controllers/infante.controller');
 
 // Rutas para infante
