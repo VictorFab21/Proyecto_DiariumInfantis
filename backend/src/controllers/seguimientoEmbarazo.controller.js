@@ -1,4 +1,4 @@
-const Embarazo = require('../models/Embarazo.model');
+const Embarazo = require('../models/embarazo.model');
 const SeguimientoEmbarazo = require('../models/seguimientoEmbarazo.model');
 
 class seguimientoEmbarazoController {
