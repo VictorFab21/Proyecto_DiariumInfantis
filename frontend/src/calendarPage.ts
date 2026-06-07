@@ -15,7 +15,7 @@ type Appointment = {
 };
 
 async function fetchAppointments(token: string): Promise<Appointment[]> {
-  const response = await fetch('http://localhost:3000/api/cita-medica', {
+  const response = await fetch('http://localhost:3000/api/citas', {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -27,7 +27,7 @@ async function fetchAppointments(token: string): Promise<Appointment[]> {
 }
 
 async function createAppointment(data: Partial<Appointment>, token: string) {
-  const response = await fetch('http://localhost:3000/api/cita-medica', {
+  const response = await fetch('http://localhost:3000/api/citas', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

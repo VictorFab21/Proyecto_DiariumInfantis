@@ -76,7 +76,7 @@ export function renderUserForm(onLogin: () => void, onRegisterSuccess: () => voi
     if (submitButton) submitButton.disabled = true;
 
     try {
-      const response = await fetch('http://localhost:3000/api/usuario/crear', {
+      const response = await fetch('http://localhost:3000/api/usuarios/crear', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

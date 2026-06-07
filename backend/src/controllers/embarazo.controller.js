@@ -20,21 +20,34 @@ class EmbarazoController {
     }
 
     // Crear nuevo embarazo
-    static async crearEmbarazo(req, res) {
-        try {
-            const nuevoEmbarazo = await Embarazo.crearEmbarazo(req.body);
+static async crearEmbarazo(req, res) {
+    try {
 
-            res.status(201).json({
-                mensaje: "Embarazo creado correctamente",
-                data: nuevoEmbarazo
-            });
-        } catch (error) {
-            res.status(500).json({
-                mensaje: "Error al crear el embarazo",
-                error: error.message
-            });
-        }
+        console.log("TOKEN:", req.usuario);
+        console.log("BODY:", req.body);
+
+        const data = {
+            ...req.body,
+            id_usuariofk: req.usuario.id_usuario
+        };
+
+        const nuevoEmbarazo = await Embarazo.crearEmbarazo(data);
+
+        res.status(201).json({
+            mensaje: "Embarazo creado correctamente",
+            data: nuevoEmbarazo
+        });
+
+    } catch (error) {
+
+        console.error("ERROR CREANDO EMBARAZO:", error);
+
+        res.status(500).json({
+            mensaje: "Error al crear el embarazo",
+            error: error.message
+        });
     }
+}
 
     // Modificar embarazo
     static async actualizarEmbarazo(req, res) {

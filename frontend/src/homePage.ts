@@ -59,7 +59,7 @@ function formatDate(date: Date) {
 
 async function fetchPregnancyFromDB(userId: number, token: string): Promise<PregnancyRecord | null> {
   try {
-    const response = await fetch(`http://localhost:3000/api/embarazo/usuario/${userId}`, {
+    const response = await fetch(`http://localhost:3000/api/embarazos/usuario/${userId}`, {
       headers: {
         'Authorization': `Bearer ${token}`,
       },
@@ -266,7 +266,7 @@ export async function renderHomePage(
       registerMessage.className = 'message';
 
       try {
-        const response = await fetch('http://localhost:3000/api/embarazo/crear', {
+        const response = await fetch('http://localhost:3000/api/embarazos', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

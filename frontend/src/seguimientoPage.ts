@@ -26,7 +26,7 @@ function formatDate(date: string) {
 }
 
 async function fetchPregnancy(userId: number, token: string): Promise<PregnancyRecord | null> {
-  const response = await fetch(`http://localhost:3000/api/embarazo/usuario/${userId}`, {
+  const response = await fetch(`http://localhost:3000/api/embarazos/usuario/${userId}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

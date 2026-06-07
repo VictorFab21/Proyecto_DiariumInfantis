@@ -42,78 +42,148 @@ class seguimientoEmbarazoController {
         }
     }
 
-    static async agregarAnalisis(req, res) {
-        try {
-            const existeid = await SeguimientoEmbarazo.findOne({ analisisClinicos: { $elemMatch: { id_analisis: Number(req.body.id_analisis) } } });
-            if (existeid) {
-                return res.status(404).json({ message: 'id existente por favor ingrese otro' });
-            }
-            const { id_embarazo, tipo_analisis, fecha, resultado,id_analisis } = req.body;
-            if (!id_embarazo || !tipo_analisis || !fecha || id_analisis == null) {
-                return res.status(400).json({ message: 'Datos requeridos incompletos' });
-            }
+static async agregarAnalisis(req, res) {
+    try {
 
-            const nuevo = { tipo_analisis, fecha, resultado,id_analisis };
-            const actualizado = await SeguimientoEmbarazo.findOneAndUpdate(
-                { id_embarazo: Number(id_embarazo) },
-                { $push: { analisisClinicos: nuevo } },
-                { returnDocument: 'after', upsert: true }
-            );
+        const { id_embarazo, tipo_analisis, fecha, resultado } = req.body;
 
-            return res.status(200).json(actualizado);
-        } catch (error) {
-            return res.status(400).json({ message: error.message });
-        }
-    }
-
-    static async agregarUltrasonido(req, res) {
-        try {
-            const existeid = await SeguimientoEmbarazo.findOne({ ultrasonidos: { $elemMatch: { id_ultrasonido: Number(req.body.id_ultrasonido) } } });
-            if (existeid) {
-                return res.status(404).json({ message: 'id existente por favor ingrese otro' });
-            }
-            const { id_embarazo, fecha, semanas_estimadas, observaciones,id_ultrasonido } = req.body;
-            if (!id_embarazo || !fecha || semanas_estimadas == null || id_ultrasonido == null) {
-                return res.status(400).json({ message: 'Datos requeridos incompletos' });
-            }
-
-            const nuevo = { fecha, semanas_estimadas, observaciones,id_ultrasonido };
-            const actualizado = await SeguimientoEmbarazo.findOneAndUpdate(
-                { id_embarazo: Number(id_embarazo) },
-                { $push: { ultrasonidos: nuevo } },
-                { returnDocument: 'after', upsert: true }
-            );
-
-            return res.status(200).json(actualizado);
-        } catch (error) {
-            return res.status(400).json({ message: error.message });
-        }
-    }
-
-    static async agregarControlPrenatal(req, res) {
-        try {
-            const existeid = await SeguimientoEmbarazo.findOne({ controlPrenatal: { $elemMatch: { id_control: Number(req.body.id_control) } } });
-            if (existeid) {
-                return res.status(404).json({ message: 'id existente por favor ingrese otro' });
-            }
-            const { id_embarazo, presion_arterial, peso, fecha_control,id_control} = req.body;
-            if (!id_embarazo || !fecha_control || id_control == null) {
-                return res.status(400).json({ message: 'Datos requeridos incompletos' });
-            }
-
-            const nuevo = { presion_arterial, peso, fecha_control,id_control };
-            const actualizado = await SeguimientoEmbarazo.findOneAndUpdate(
-                { id_embarazo: Number(id_embarazo) },
-                { $push: { controlPrenatal: nuevo } },
-                { returnDocument: 'after', upsert: true }
-            );
-
-            return res.status(200).json(actualizado);
-        } catch (error) {
-            return res.status(400).json({ message: error.message });
+        if (!id_embarazo || !tipo_analisis || !fecha) {
+            return res.status(400).json({
+                message: 'Datos requeridos incompletos'
+            });
         }
 
+        // Generar ID automático
+        const id_analisis = Date.now();
+
+        const nuevo = {
+            id_analisis,
+            tipo_analisis,
+            fecha,
+            resultado
+        };
+
+        const actualizado = await SeguimientoEmbarazo.findOneAndUpdate(
+            {
+                id_embarazo: Number(id_embarazo)
+            },
+            {
+                $push: {
+                    analisisClinicos: nuevo
+                }
+            },
+            {
+                new: true,
+                upsert: true
+            }
+        );
+
+        return res.status(200).json(actualizado);
+
+    } catch (error) {
+        return res.status(400).json({
+            message: error.message
+        });
     }
+}
+
+static async agregarUltrasonido(req, res) {
+    try {
+
+        const { id_embarazo, fecha, semanas_estimadas, observaciones } = req.body;
+
+        if (!id_embarazo || !fecha || semanas_estimadas == null) {
+            return res.status(400).json({
+                message: 'Datos requeridos incompletos'
+            });
+        }
+
+        const id_ultrasonido = Date.now();
+
+        const nuevo = {
+            id_ultrasonido,
+            fecha,
+            semanas_estimadas,
+            observaciones
+        };
+
+        const actualizado = await SeguimientoEmbarazo.findOneAndUpdate(
+            {
+                id_embarazo: Number(id_embarazo)
+            },
+            {
+                $push: {
+                    ultrasonidos: nuevo
+                }
+            },
+            {
+                new: true,
+                upsert: true
+            }
+        );
+
+        return res.status(200).json(actualizado);
+
+    } catch (error) {
+        return res.status(400).json({
+            message: error.message
+        });
+    }
+}
+
+static async agregarControlPrenatal(req, res) {
+    try {
+
+        const { 
+            id_embarazo,
+            presion_arterial,
+            peso,
+            fecha_control
+        } = req.body;
+
+
+        if (!id_embarazo || !fecha_control) {
+            return res.status(400).json({
+                message: 'Datos requeridos incompletos'
+            });
+        }
+
+
+        const id_control = Date.now();
+
+
+        const nuevo = {
+            id_control,
+            presion_arterial,
+            peso,
+            fecha_control
+        };
+
+
+        const actualizado = await SeguimientoEmbarazo.findOneAndUpdate(
+            {
+                id_embarazo: Number(id_embarazo)
+            },
+            {
+                $push: {
+                    controlPrenatal: nuevo
+                }
+            },
+            {
+                new: true,
+                upsert: true
+            }
+        );
+
+
+        return res.status(200).json(actualizado);
+
+    } catch (error) {
+        return res.status(400).json({
+            message: error.message
+        });
+    }
+}
 
      static async actualizaranalisis(req, res){
     try {
